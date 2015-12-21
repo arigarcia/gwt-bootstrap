@@ -1,11 +1,7 @@
-# [GWT-Bootstrap](http://gwtbootstrap.github.com/) [![Build Status on Jenkins](https://buildhive.cloudbees.com/job/gwtbootstrap/job/gwt-bootstrap/badge/icon)](https://buildhive.cloudbees.com/job/gwtbootstrap/job/gwt-bootstrap/)[![Travis-CI Build Status](https://travis-ci.org/gwtbootstrap/gwt-bootstrap.png?branch=master)](https://travis-ci.org/gwtbootstrap/gwt-bootstrap)
+# [GWT-Bootstrap](http://gwtbootstrap.github.com/) [![Travis-CI Build Status](https://travis-ci.org/gwtbootstrap/gwt-bootstrap.png?branch=master)](https://travis-ci.org/gwtbootstrap/gwt-bootstrap) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.gwtbootstrap/gwt-bootstrap/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.gwtbootstrap/gwt-bootstrap)
 
-=================
-# GWT-Bootstrap [2.2.1.0](http://search.maven.org/#artifactdetails%7Ccom.github.gwtbootstrap%7Cgwt-bootstrap%7C2.2.1.0%7Cjar) was released.
-=================
-
-Based on [Bootstrap, from Twitter.](http://twitter.github.com/bootstrap/index.html), GWT-Bootstrap
-Bootstrap provides simple and flexible components representing Twitter's bootstrap components, styles,
+Based on [Bootstrap.](http://getbootstrap.com/2.3.2/), GWT-Bootstrap
+Bootstrap provides simple and flexible components representing Bootstrap components, styles,
 and plugins.
 In other words, it's a front-end API for faster, more beautiful GWT web development.
 
@@ -22,3 +18,6 @@ In other words, it's a front-end API for faster, more beautiful GWT web developm
 Help us to improve and continue working on GWT-Bootstrap. Do pull-requests and/or donate.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUFTCV6VQGLSS)
+ 
+## Thanks to
+[![IntelliJ](https://lh6.googleusercontent.com/--QIIJfKrjSk/UJJ6X-UohII/AAAAAAAAAVM/cOW7EjnH778/s800/banner_IDEA.png)](http://www.jetbrains.com/idea/index.html)

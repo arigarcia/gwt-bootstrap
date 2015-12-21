@@ -25,22 +25,28 @@ import com.github.gwtbootstrap.client.ui.base.Style;
 * 
 * @author Dominik Mayer
 * 
-* @see <a href="http://twitter.github.com/bootstrap/components.html#badges">Bootstrap documentation</a>
+* @see <a href="http://getbootstrap.com/2.3.2/components.html#labels-badges">Bootstrap documentation</a>
 * 
 */
 //@formatter:on
 public enum BadgeType implements Style {
 
-	DEFAULT(""), SUCCESS("badge-success"), WARNING("badge-warning"), ERROR(
-			"badge-error"), INFO("badge-info"), INVERSE("badge-inverse"),
-			IMPORTANT("badge-important");
+	DEFAULT(""),
 
-	private static final String badge = "badge ";
+    SUCCESS("badge-success"),
+
+    WARNING("badge-warning"),
+
+    IMPORTANT("badge-important"),
+
+    INFO("badge-info"),
+
+    INVERSE("badge-inverse");
 
 	private String className;
 
 	private BadgeType(String className) {
-		this.className = badge + className;
+		this.className = className;
 	}
 
 	public String get() {

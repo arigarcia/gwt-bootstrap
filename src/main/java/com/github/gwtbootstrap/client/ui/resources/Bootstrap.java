@@ -19,7 +19,7 @@ import com.github.gwtbootstrap.client.ui.base.Style;
 import com.github.gwtbootstrap.client.ui.constants.Constants;
 
 /**
- * Constants interface with all CSS class names from Twitter Bootstrap. Will be
+ * Constants interface with all CSS class names from Bootstrap. Will be
  * removed once the migration to {@link Constants} is finished.
  * 
  * @since 2.0.4.0
@@ -93,14 +93,6 @@ public interface Bootstrap {
 	public static final String tab_content = "tab-content";
 
 	public static final String footer = "footer";
-
-	public static final String nav_collapse = "nav-collapse";
-
-	public static final String nav_collapse_target = "." + nav_collapse;
-
-	public static final String collapse = "collapse";
-
-	public static final String data_target = "data-target";
 
 	public enum Tabs implements Style {
 

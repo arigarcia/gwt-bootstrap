@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 * 
 * @author Dominik Mayer
 * 
-* @see <a href="http://twitter.github.com/bootstrap/javascript.html#popovers">Bootstrap documentation</a>
+* @see <a href="http://getbootstrap.com/2.3.2/javascript.html#popovers">Bootstrap documentation</a>
 */
 //@formatter:on
 public abstract class HoverBase extends MarkupWidget  implements IsWidget, HasWidgets, HasOneWidget, IsAnimated, HasTrigger, HasPlacement, HasText, HasShowDelay, HasVisibility {
@@ -114,20 +114,7 @@ public abstract class HoverBase extends MarkupWidget  implements IsWidget, HasWi
 		removeDataIfExists(getWidget().getElement(), getDataName());
 	}
 	
-	protected native void removeDataIfExists(Element e, String dataName) /*-{
-	    var element = $wnd.jQuery(e);
-		if(element.data(dataName)) {
-			var data = element.data(dataName);
-			var eventIn, eventOut;
-			if (data.options.trigger != 'manual') {
-				eventIn  = data.options.trigger == 'hover' ? 'mouseenter' : 'focus'
-				eventOut = data.options.trigger == 'hover' ? 'mouseleave' : 'blur'
-				data.$element.off(eventIn);
-				data.$element.off(eventOut);
-			}
-			element.removeData(dataName);
-		}
-	}-*/;
+	protected abstract void removeDataIfExists(Element e, String dataName);
 
 	/**
 	 * Adds an HTML data attribute to the widget's tag.

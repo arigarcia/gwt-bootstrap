@@ -1,10 +1,31 @@
 package com.github.gwtbootstrap.timepicker.client.ui.base;
 
 import com.github.gwtbootstrap.client.ui.TextBox;
-import com.github.gwtbootstrap.client.ui.base.*;
+import com.github.gwtbootstrap.client.ui.base.HasAlternateSize;
+import com.github.gwtbootstrap.client.ui.base.HasId;
+import com.github.gwtbootstrap.client.ui.base.HasPlaceholder;
+import com.github.gwtbootstrap.client.ui.base.HasSize;
+import com.github.gwtbootstrap.client.ui.base.HasStyle;
+import com.github.gwtbootstrap.client.ui.base.HasVisibility;
+import com.github.gwtbootstrap.client.ui.base.IsResponsive;
+import com.github.gwtbootstrap.client.ui.base.IsSearchQuery;
+import com.github.gwtbootstrap.client.ui.base.PlaceholderHelper;
+import com.github.gwtbootstrap.client.ui.base.ResponsiveHelper;
+import com.github.gwtbootstrap.client.ui.base.SearchQueryStyleHelper;
+import com.github.gwtbootstrap.client.ui.base.SizeHelper;
+import com.github.gwtbootstrap.client.ui.base.Style;
+import com.github.gwtbootstrap.client.ui.base.StyleHelper;
 import com.github.gwtbootstrap.client.ui.constants.AlternateSize;
 import com.github.gwtbootstrap.client.ui.constants.Device;
-import com.github.gwtbootstrap.client.ui.event.*;
+import com.github.gwtbootstrap.client.ui.event.HasVisibleHandlers;
+import com.github.gwtbootstrap.client.ui.event.HiddenEvent;
+import com.github.gwtbootstrap.client.ui.event.HiddenHandler;
+import com.github.gwtbootstrap.client.ui.event.HideEvent;
+import com.github.gwtbootstrap.client.ui.event.HideHandler;
+import com.github.gwtbootstrap.client.ui.event.ShowEvent;
+import com.github.gwtbootstrap.client.ui.event.ShowHandler;
+import com.github.gwtbootstrap.client.ui.event.ShownEvent;
+import com.github.gwtbootstrap.client.ui.event.ShownHandler;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
@@ -27,10 +48,11 @@ import java.util.Date;
  */
 public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceholder, HasTemplate, HasShowInputs, HasSecondStep,
         HasModalBackdrop, HasMinuteStep, HasDisableFocus, HasDefaultTime, HasShowSeconds, HasMeridian, HasAlternateSize,
-        IsSearchQuery, HasSize, HasId, IsResponsive, HasStyle, HasValue<Date>, HasEnabled, HasValueChangeHandlers<Date>, HasVisibility {
+        IsSearchQuery, HasSize, HasId, IsResponsive, HasStyle, HasValue<Date>, HasEnabled, HasValueChangeHandlers<Date>, HasVisibility, HasTimeFormat {
 
     private final TextBox box;
-    private final DateTimeFormat dtf = DateTimeFormat.getFormat("HH:mm:ss");
+    private String format;
+    private DateTimeFormat dtf;
 
     // Defaults
     private Template template = Template.DROPDOWN;
@@ -49,9 +71,25 @@ public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceh
     private PlaceholderHelper placeholderHelper = GWT.create(PlaceholderHelper.class);
 
     public TimeBoxBase() {
-        this.box = new TextBox();
+        box = new TextBox();
         box.setStyleName("input-mini");
         setElement(box.getElement());
+        setFormat("HH:mm:ss a");
+        setValue(new Date());
+    }
+
+    /**
+     * @see com.google.gwt.user.client.ui.ValueBoxBase#isReadOnly()
+     */
+    public boolean isReadOnly() {
+        return box.isReadOnly();
+    }
+
+    /**
+     * @see com.google.gwt.user.client.ui.ValueBoxBase#setReadOnly(boolean)
+     */
+    public void setReadOnly(boolean readonly) {
+        box.setReadOnly(readonly);
     }
 
     /**
@@ -96,8 +134,8 @@ public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceh
      * {@inheritDoc}
      */
     protected native void updateValue(Element e)/*-{
-        if ($wnd.jQuery(e).data('timepicker')) {
-            $wnd.jQuery(e).data('timepicker').update();
+        if ($wnd.jQuery(e).data('changeTime.timepicker')) {
+            $wnd.jQuery(e).data('changeTime.timepicker').update();
         }
     }-*/;
 
@@ -129,6 +167,7 @@ public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceh
      * @param w: the widget to configure.
      */
     protected void configure(Widget w) {
+        w.getElement().setAttribute("data-date-format", format);
         configure(w.getElement(), template.name().toLowerCase(), defaultTime.name().toLowerCase(), minuteStep, showSeconds, secondStep, showMeridian,
                 showInputs, disableFocus, modalBackdrop);
     }
@@ -140,7 +179,6 @@ public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceh
      */
     protected native void configure(Element e, String template, String defaultTime, int minuteStep, boolean showSeconds, int secondStep,
                                     boolean showMeridian, boolean showInputs, boolean disableFocus, boolean modalBackdrop) /*-{
-        var that = this;
         $wnd.jQuery(e).timepicker(
             {
                 template: template,
@@ -192,9 +230,11 @@ public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceh
      */
     protected native void removeDataIfExists(Element e) /*-{
         var $that = $wnd.jQuery(e);
-        if ($that.data('timepicker')) {
-            console.log($that.data());
+        data = $that.data('timepicker');
+        if (data) {
+            picker = data.picker;
             $that.removeData('timepicker');
+            picker.remove();
             $that.off();
         }
     }-*/;
@@ -216,6 +256,16 @@ public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceh
         super.onLoad();
         configure(getElement(), template.name().toLowerCase(), defaultTime.name().toLowerCase(), minuteStep, showSeconds, secondStep, showMeridian,
                 showInputs, disableFocus, modalBackdrop);
+    }
+
+    /**
+     * This method is called immediately before a widget will be detached from the browser's document.
+     */
+    @Override
+    protected void onUnload() {
+        super.onUnload();
+        execute("remove");
+        removeDataIfExists(getElement());
     }
 
     /**
@@ -466,5 +516,15 @@ public class TimeBoxBase extends Widget implements HasVisibleHandlers, HasPlaceh
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Date> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
+    }
+
+    @Override
+    public void setFormat(String format) {
+        this.format = format;
+        Date oldValue = getValue();
+        this.dtf = DateTimeFormat.getFormat(format);
+        if (oldValue != null) {
+            setValue(oldValue);
+        }
     }
 }

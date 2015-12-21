@@ -30,7 +30,7 @@ import com.google.gwt.dom.client.Element;
  * @author ohashi keisuke
  * 
  * @see <a
- *      href="http://twitter.github.com/bootstrap/javascript.html#popovers">Bootstrap
+ *      href="http://getbootstrap.com/2.3.2/javascript.html#popovers">Bootstrap
  *      documentation</a>
  * @see Tooltip
  */
@@ -133,4 +133,16 @@ public class Popover extends HoverBase {
 	public void setHtml(boolean html) {
 		this.html = html;
 	}
+
+    @Override
+    protected void removeDataIfExists(Element e, String dataName) {
+        doRemoveDataIfExists(e, dataName);
+    }
+
+    private native void doRemoveDataIfExists(Element e, String dataName) /*-{
+        var element = $wnd.jQuery(e);
+        if(element.data(dataName)) {
+            element.popover('destroy');
+        }
+    }-*/;
 }
